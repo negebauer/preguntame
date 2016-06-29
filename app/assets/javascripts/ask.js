@@ -2,15 +2,28 @@ $(function() {
   $('form.question').on('submit', makeQuestion)
 })
 
-var test = function() {
-  console.log('test');
-}
-
 function makeQuestion(ev) {
   // TODO: REVISAR CONTENIDO DE LA PREGUNTA
   var question = $('textarea.question').val()
+  if isQuestionValid(question) {
+
+  } else {
+
+  }
   console.log(question);
   ev.preventDefault();
+}
+
+function isQuestionValid(question) {
+
+}
+
+function questionExecute(question) {
+
+}
+
+function questionError(error) {
+
 }
 
 // $.ajax({
