@@ -22,12 +22,17 @@ class Api::V1::QuestionController < Api::V1::ApiController
     private
 
     def respond(question)
-        response = []
-        @@client.search(question, result_type: "today").take(500).collect do |tweet|
+        # response = []
+        tweets = @@client.search(question, result_type: "today").take(10).collect
+        tweets = tweets.sort_by { |t| t.retweet_count }
+        tweets = tweets.reverse
+        # @@client.search(question, result_type: "today").take(500).collect do |tweet|
         #   puts"#{tweet.full_text}:#{tweet.retweet_count},#{tweet.favorite_count}"
-            response.append(tweet.full_text)
-        end
-        response
+            # response.append(tweet.full_text)
+        # end
+        # tweets.map { |t| t.retweet_count }
+        # tweets
+        tweets[0...3]
     end
 
     def stop_words_check
