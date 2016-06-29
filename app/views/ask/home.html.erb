@@ -3,9 +3,12 @@
 
     <div class="form-group">
       <center>
+        <div class = 'logo_app'>
+        </div>
         <h1>Preguntame algo</h1>
       </center>
     </div>
+    <div class = 'contenedor'>
     <div class="form-group">
         <%= text_area_tag :question, nil, class: "question form-control",placeholder: "Escribe un pregunta acá"  %>
     </div>
@@ -13,6 +16,7 @@
         <%= submit_tag "Preguntame!", class: "form-control btn btn-default" %><br><br>
     </div>
     <% end %>
+  </div>
 
     <div class="error"></div>
     <div class="response"></div>

@@ -13,3 +13,19 @@
  *= require_tree .
  *= require_self
  */
+ .logo_app {
+    content:url('twitter-logo.png');
+  	width:20%;
+     height: auto;
+     margin-left: auto;
+     margin-right: auto;
+ }
+
+ h1 {
+   color: white;
+ }
+ .contenedor{
+  margin-left: 10vw;
+  margin-right: 10vw;
+  padding-top: 20px;
+}
