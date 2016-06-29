@@ -8,7 +8,7 @@ function makeQuestion(ev) {
   // Borrar info anterior
   $('.error').html('')
   $('.response').html('')
-  // Obtenemos la pregunta
+    // Obtenemos la pregunta
   var question = $('textarea.question').val()
   var error = isQuestionValid(question)
   if (error) {
@@ -28,7 +28,9 @@ function questionExecute(question) {
   $.ajax({
     type: "POST",
     url: "/api/v1/question",
-    data: {"question": question},
+    data: {
+      "question": question
+    },
     success: function(result) {
       var html = '<h3>Respuesta</h3><p>' + result['question'] + '</p>'
       $('.response').html(html)
