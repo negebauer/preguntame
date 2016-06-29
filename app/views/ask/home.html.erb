@@ -1,2 +1,13 @@
-<h1>Ask#home</h1>
-<p>Find me in app/views/ask/home.html.erb</p>
+<div class="error">
+    
+</div>
+
+<%= form_tag ask_respond_path, :method => 'post', class: "question" do %>
+<h1>Preguntame algo</h1>
+<%= text_area_tag :question, nil, class: "question" %>
+<%= submit_tag "Preguntame!"%><br><br>
+<% end %>
+
+<div class="response">
+
+</div>
