@@ -16,7 +16,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         data = filter.filter question.split
         response = respond(data.join(' '))
 
-        render json: { 'question': response }
+        render json: { 'response': response }
     end
 
     private
