@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         root 'api#index'
         namespace :v1 do
             root 'api#index'
-            post 'question', to: 'question'
+            post 'question', controller: 'question'
         end
     end
 end
