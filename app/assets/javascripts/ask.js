@@ -34,13 +34,13 @@ function questionExecute(question) {
       $('.response').html(html)
     },
     error: function(req, status, error) {
-      var html = '<h3>Pregunta inválida</h3><p>' + error + '</p>'
+      var html = '<h4>La pregunta ingresada es inválida, intenta con otra pregunta...</h4>'
       $('.error').html(html)
     }
   });
 }
 
 function questionError(error) {
-  var html = '<h3>Pregunta inválida</h3><p>' + error + '</p>'
+  var html = '<h3>La pregunta ingresada es inválida, intenta con otra pregunta...</h3>'
   $('.error').html(html)
 }
