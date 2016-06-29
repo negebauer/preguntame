@@ -2,10 +2,12 @@
     <%= form_tag ask_respond_path, class: "question" do %>
 
     <div class="form-group">
+      <center>
         <h1>Preguntame algo</h1>
+      </center>
     </div>
     <div class="form-group">
-        <%= text_area_tag :question, nil, class: "question form-control" %>
+        <%= text_area_tag :question, nil, class: "question form-control",placeholder: "Escribe un pregunta acá"  %>
     </div>
     <div class="form-group">
         <%= submit_tag "Preguntame!", class: "form-control btn btn-default" %><br><br>
