@@ -22,6 +22,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'twitter'
 
+gem 'unirest'
+
 gem 'stopwords-filter', require: 'stopwords'
 
 # Use ActiveModel has_secure_password
