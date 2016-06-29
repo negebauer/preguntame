@@ -27,10 +27,10 @@ function isQuestionValid(question) {
 function questionExecute(question) {
   $.ajax({
     type: "POST",
-    url: "/ask/respond",
+    url: "/api/v1/question",
     data: {"question": question},
     success: function(result) {
-      var html = '<h3>Respuesta</h3><p>' + result + '</p>'
+      var html = '<h3>Respuesta</h3><p>' + result['question'] + '</p>'
       $('.response').html(html)
     },
     error: function(req, status, error) {
