@@ -13,29 +13,27 @@
  *= require_tree .
  *= require_self
  */
- .logo_app {
-    content:url('twitter-logo.png');
-  	width:20%;
-     height: auto;
-     margin-left: auto;
-     margin-right: auto;
-     margin-top: 1.8vw;
-     max-width: 150px;
- }
 
- h1 {
-   color: white;
- }
- .contenedor{
-  margin-left: 10vw;
-  margin-right: 10vw;
-  padding-top: 20px;
+.logo_app {
+    content: url('twitter-logo.png');
+    width: 20%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1.8vw;
+    max-width: 150px;
 }
-
+h1 {
+    color: white;
+}
+.contenedor {
+    margin-left: 20vw;
+    margin-right: 20vw;
+    padding-top: 20px;
+}
 body {
-  color: white;
+    color: white;
 }
-
 .alert {
     padding: 20px;
     background-color: #f44336;
@@ -44,11 +42,15 @@ body {
     transition: opacity 0.6s;
     margin-bottom: 15px;
 }
-
-.alert.success {background-color: #4CAF50;}
-.alert.info {background-color: #2196F3;}
-.alert.warning {background-color: #ff9800;}
-
+.alert.success {
+    background-color: #4CAF50;
+}
+.alert.info {
+    background-color: #2196F3;
+}
+.alert.warning {
+    background-color: #ff9800;
+}
 .closebtn {
     margin-left: 15px;
     color: white;
@@ -59,7 +61,6 @@ body {
     cursor: pointer;
     transition: 0.3s;
 }
-
 .closebtn:hover {
     color: black;
 }
