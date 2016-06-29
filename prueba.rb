@@ -8,6 +8,11 @@ client = Twitter::REST::Client.new do |config|
   config.access_token_secret = "eTAxguM6b0IZV0yOJ6VF7K7V6ocygs6GmGWtpdIBEIhiT"
 end
 
-client.search("to:Chile", result_type: "recent").take(100).collect do |tweet|
-  puts"#{tweet.user.screen_name}: #{tweet.text}"
+i = 1
+client.search("#Chile", result_type: "today").take(100).collect do |tweet|
+  puts"#{tweet.full_text}:#{tweet.retweet_count},#{tweet.favorite_count}"
+  puts i
+  i += 1
 end
+
+#{tweet.text}
