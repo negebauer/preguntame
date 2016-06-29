@@ -8,7 +8,7 @@ function makeQuestion(ev) {
   // Borrar info anterior
   $('.error').html('')
   $('.response').html('')
-    // Obtenemos la pregunta
+  // Obtenemos la pregunta
   var question = $('textarea.question').val()
   var error = isQuestionValid(question)
   if (error) {
@@ -27,22 +27,20 @@ function isQuestionValid(question) {
 function questionExecute(question) {
   $.ajax({
     type: "POST",
-    url: "/api/v1/question",
-    data: {
-      "question": question
-    },
+    url: "/ask/respond",
+    data: {"question": question},
     success: function(result) {
-      var html = '<h3>Respuesta</h3><p>' + result['question'] + '</p>'
+      var html = '<h3>Respuesta</h3><p>' + result + '</p>'
       $('.response').html(html)
     },
     error: function(req, status, error) {
-      var html = '<h4>La pregunta ingresada es inválida, intenta con otra pregunta...</h4>'
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>La pregunta ingresada es inválida, intenta con otra pregunta...</h4>  </div>'
       $('.error').html(html)
     }
   });
 }
 
 function questionError(error) {
-  var html = '<h3>La pregunta ingresada es inválida, intenta con otra pregunta...</h3>'
+  var html = '<div class="alert"><span class="closebtn">&times;</span><h4>La pregunta ingresada es inválida, intenta con otra pregunta...</h4>  </div>'
   $('.error').html(html)
 }
