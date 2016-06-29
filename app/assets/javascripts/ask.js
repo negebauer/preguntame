@@ -39,3 +39,8 @@ function questionExecute(question) {
     }
   });
 }
+
+function questionError(error) {
+  var html = '<h3>Pregunta inválida</h3><p>' + error + '</p>'
+  $('.error').html(html)
+}
