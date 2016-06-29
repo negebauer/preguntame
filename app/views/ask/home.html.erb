@@ -2,7 +2,7 @@
 
 </div>
 
-<%= form_tag ask_respond_path, :method => 'post', class: "question" do %>
+<%= form_tag ask_respond_path, class: "question" do %>
 <h1>Preguntame algo</h1>
 <%= text_area_tag :question, nil, class: "question" %>
 <%= submit_tag "Preguntame!"%><br><br>

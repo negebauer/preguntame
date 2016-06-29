@@ -3,37 +3,39 @@ $(function() {
 })
 
 function makeQuestion(ev) {
-  // TODO: REVISAR CONTENIDO DE LA PREGUNTA
-  var question = $('textarea.question').val()
-  if isQuestionValid(question) {
-
-  } else {
-
-  }
-  console.log(question);
+  // Bloquear post del formulario
   ev.preventDefault();
+  // Borrar info anterior
+  $('.error').html('')
+  $('.response').html('')
+  // Obtenemos la pregunta
+  var question = $('textarea.question').val()
+  var error = isQuestionValid(question)
+  if (error) {
+    questionError(error)
+  } else {
+    questionExecute(question)
+  }
 }
 
 function isQuestionValid(question) {
-
+  if (question == "") {
+    return "La pregunta está vacía"
+  }
 }
 
 function questionExecute(question) {
-
+  $.ajax({
+    type: "POST",
+    url: "/ask/respond",
+    data: {"question": question},
+    success: function(result) {
+      var html = '<h3>Respuesta</h3><p>' + result + '</p>'
+      $('.response').html(html)
+    },
+    error: function(req, status, error) {
+      var html = '<h3>Pregunta inválida</h3><p>' + error + '</p>'
+      $('.error').html(html)
+    }
+  });
 }
-
-function questionError(error) {
-
-}
-
-// $.ajax({
-//            type: "POST",
-//            url: "/ask/respond", // the URL of the controller action method
-//            data: ["question": $(".question").text], // optional data
-//            success: function(result) {
-//                 // do something with result
-//            },
-//            error : function(req, status, error) {
-//                 // do something with error
-//            }
-//        });
