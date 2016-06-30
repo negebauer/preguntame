@@ -6,40 +6,7 @@ $(function() {
     questionProcessing()
     questionExecute(ev.target.innerHTML)
   })
-  // var bird = $('.logo_app')
-  // bird.on('mouseover', function(ev) {
-  //   if (bird.attr('data-rotating') == 0) {
-  //     rotateAnimation(bird, 10)
-  //   }
-  // })
 })
-
-// function rotateAnimation(elem, speed) {
-//   var logo = $('.logo_app')
-//   var rotating = logo.attr("data-rotating")
-//   var degrees = logo.attr("data-degrees")
-//   logo.css({
-//     "transform": 'rotate(' + degrees + 'deg)',
-//     "-ms-transform": 'rotate(' + degrees + 'deg)',
-//     "-moz-transform": 'rotate(' + degrees + 'deg)',
-//     "-webkit-transform": 'rotate(' + degrees + 'deg)',
-//     "-o-transform": 'rotate(' + degrees + 'deg)',
-//     "-webkit-transform-style": 'preserve-3d',
-//     "-webkit-backface-visibility": 'hidden',
-//     "-webkit-backface-visibility": 'hidden'
-//   });
-//   degrees++
-//   if (degrees > 359) {
-//     degrees = 1
-//   }
-//   logo.attr("data-degrees", degrees)
-//   if (logo.attr('data-rotating') == '0') {
-//     logo.attr("data-rotating", 1)
-//   }
-//   setTimeout(function() {
-//     rotateAnimation(elem, speed)
-//   }, speed);
-// }
 
 // SINGLE QUESTION
 
