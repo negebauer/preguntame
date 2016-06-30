@@ -119,7 +119,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
     def tweets_for_cluster(tweets)
       message = ""
       id = ""
-      total = tweets.count +1
+      total = tweets.count + 1
       tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n"}
       total.times {|i| id = id + String(i) + "\n"}
       return message, id
