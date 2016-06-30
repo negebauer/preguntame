@@ -47,7 +47,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         message, id = tweets_for_cluster(tweets)
         json = cluster_conexion(message, id)
         cluster_list = processing_cluster_list(json)
-        if cluster_list.empty?
+        if cluster_list.nil?
           cluster_list = ["No hay tweets de opinion"]
         end
 
@@ -95,18 +95,30 @@ class Api::V1::QuestionController < Api::V1::ApiController
     end
 
     def min_max(data)
-        # TODO: Hacer decente. Sacar P+ o P. Sacar N+ o N
-        negativo = "No hay tweet destacado"
-        positivo = "No hay tweet destacado"
+        default = "No hay tweet destacado"
+        negative = ""
+        positive = ""
         data['sentence_list'].each do |tweet|
-            if (tweet["score_tag"] == "N+") && negativo == "No hay tweet destacado"
-                negativo = tweet["text"]
-            end
-            if (tweet["score_tag"] == "P") && positivo == "No hay tweet destacado"
-                positivo = tweet["text"]
+            break if negative != "" && positive != ""
+            if (tweet["score_tag"] == "N+")
+                negative = tweet["text"]
+            elsif
+             (tweet["score_tag"] == "P+")
+                positive = tweet["text"]
             end
         end
-        return positivo,negativo
+        data['sentence_list'].each do |tweet|
+            break if negative != "" && positive != ""
+            if (tweet["score_tag"] == "N") && negative == ""
+                negative = tweet["text"]
+            elsif
+             (tweet["score_tag"] == "P") && positive == ""
+                positive = tweet["text"]
+            end
+        end
+        negative = default if negative == ""
+        positive = default if positive == ""
+        return positive, negative
     end
 
 
