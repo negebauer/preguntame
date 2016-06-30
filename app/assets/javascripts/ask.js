@@ -66,11 +66,8 @@ function questionExecute(question) {
       html += '<h3>Quizás te interese saber cuales son los conceptos claves de tu pregunta...</h3>'
       html += '<br><div class= percentagebox>'
       concepts = result['key_concepts']
-      k = 0
       for (var i in concepts) {
-        if (k > 10) break
         html += '<p>' + concepts[i] + '</p>'
-        k++
       }
       html += '</div>'
       html += '<div class=row><div class=col-md-6>'

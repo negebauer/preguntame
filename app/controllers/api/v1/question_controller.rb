@@ -40,7 +40,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         retweets = tweets_retweeted(tweets, 5)
         data, score, confidence = tweets_data(tweets)
         pos, neg, neu = tweets_scores(data)
-        key_concepts = tweets_key_concepts(data).map { |key, val| key }
+        key_concepts = tweets_key_concepts(data).map { |key, val| key }[0...10]
         twet_pos,twet_neg = min_max(data)
         scores = {'P' => 'Positivo', 'P+' => 'Muy positivo', 'N' => 'Negativo', 'N+' => 'Muy negativo', 'NEU' => 'Neutro', 'NONE' => 'No hay'}
 
