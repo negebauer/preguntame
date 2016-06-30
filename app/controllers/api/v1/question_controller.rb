@@ -3,6 +3,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
     require 'twitter'
     require 'uri'
     require 'net/http'
+    require 'json'
 
     before_action :stop_words_check
     before_action :stop_words_load
@@ -22,8 +23,20 @@ class Api::V1::QuestionController < Api::V1::ApiController
     end
 
     def question_fixed
-        # TODO: Hacer la query correspondiente rene!
-        render json: { 'response': 'como esta chile!!!!' }
+      mensaje = ""
+      @@client.search("chile",locations: "-109.460,-66.420,-55.980,-17.510" ,result_type: "today", :lang => "es").take(100).collect do |tweet|
+          mensaje = mensaje + tweet.full_text.to_s + "\n"
+      end
+      url = URI("http://api.meaningcloud.com/sentiment-2.1")
+      http = Net::HTTP.new(url.host, url.port)
+
+      request = Net::HTTP::Post.new(url)
+      request["content-type"] = 'application/x-www-form-urlencoded'
+      request.body = "key=68e8c30899c70cee783b176a3c6eb140&lang=es&txt=#{mensaje}"
+
+      response = http.request(request)
+      data =  JSON.parse(response.body)
+      render json: { 'response': data["score_tag"]}
     end
 
     private
