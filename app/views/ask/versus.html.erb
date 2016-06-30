@@ -1,22 +1,4 @@
-<div class="form-group">
-    <center>
-        <div class='logo_app'></div>
-        <h1>Preguntame algo</h1>
-    </center>
-</div>
-
-<center>
-    <div class='contenedor'>
-    <ul class="nav nav-pills nav-justified">
-        <li role="presentation">
-            <%= link_to 'Preguntame', ask_home_path %>
-        </li>
-        <li role="presentation", class="active">
-            <%= link_to 'Versus', ask_versus_path %>
-        </li>
-    </ul>
-</div>
-</center>
+<%= render 'nav_bar', active: ask_versus_path %>
 
 <center>
     <div class="container-fluid">
