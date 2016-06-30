@@ -22,21 +22,40 @@ class Api::V1::QuestionController < Api::V1::ApiController
         render json: { 'response': response }
     end
 
+
     def question_fixed
-      mensaje = ""
-      @@client.search("chile",locations: "-109.460,-66.420,-55.980,-17.510" ,result_type: "today", :lang => "es").take(100).collect do |tweet|
-          mensaje = mensaje + tweet.full_text.to_s + "\n"
-      end
-      url = URI("http://api.meaningcloud.com/sentiment-2.1")
-      http = Net::HTTP.new(url.host, url.port)
+        mensaje = ""
+        @@client.search("chile",locations: "-109.460,-66.420,-55.980,-17.510" ,result_type: "today", :lang => "es").take(100).collect do |tweet|
+            mensaje = mensaje + tweet.full_text.to_s + "\n"
+        end
+        url = URI("http://api.meaningcloud.com/sentiment-2.1")
+        http = Net::HTTP.new(url.host, url.port)
 
-      request = Net::HTTP::Post.new(url)
-      request["content-type"] = 'application/x-www-form-urlencoded'
-      request.body = "key=68e8c30899c70cee783b176a3c6eb140&lang=es&txt=#{mensaje}"
+        request = Net::HTTP::Post.new(url)
+        request["content-type"] = 'application/x-www-form-urlencoded'
+        request.body = "key=68e8c30899c70cee783b176a3c6eb140&lang=es&txt=#{mensaje}"
 
-      response = http.request(request)
-      data =  JSON.parse(response.body)
-      render json: { 'response': data["score_tag"]}
+        response = http.request(request)
+        data =  JSON.parse(response.body)
+
+        case data["score_tag"]
+        when "P+"
+            score = ":D"
+        when "P"
+            score = ":)"
+        when "NEU"
+            score = ":|"
+        when "N"
+            score = ":("
+        when "N+"
+            score = ":C"
+        when "NONE"
+            score = ":S"
+        else
+            score = "ERROR"
+        end
+
+        render json: { 'response': score }
     end
 
     private
