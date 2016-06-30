@@ -1,5 +1,6 @@
 $(function() {
   $('form.question').on('submit', makeQuestion)
+  $('.question-fixed').on('click', makeQuestionFixed)
 })
 
 function makeQuestion(ev) {
@@ -40,15 +41,32 @@ function questionExecute(question) {
       $('.response').html(html)
     },
     error: function(req, status, error) {
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>La pregunta ingresada es inválida, intenta con otra pregunta...</h4>' + error + '</div>'
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta.</h4>' + error + '</div>'
       $('.error').html(html)
       $('.closebtn').on('click', cleanResponse)
     }
-  });
+  })
+}
+
+function makeQuestionFixed() {
+  cleanResponse()
+  $.ajax({
+    type: "POST",
+    url: "/api/v1/question_fixed",
+    success: function(result) {
+      var html = '<h3>Respuesta</h3><p>' + result['response'] + '</p>'
+      $('.response').html(html)
+    },
+    error: function(req, status, error) {
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta.</h4>' + error + '</div>'
+      $('.error').html(html)
+      $('.closebtn').on('click', cleanResponse)
+    }
+  })
 }
 
 function questionError(error) {
-  var html = '<div class="alert"><span class="closebtn">&times;</span><h4>La pregunta ingresada es inválida, intenta con otra pregunta...</h4>  </div>'
+  var html = '<div class="alert"><span class="closebtn">&times;</span><h4>La pregunta ingresada es inválida, intenta con otra pregunta.</h4>  </div>'
   $('.error').html(html)
   $('.closebtn').on('click', cleanResponse)
 }

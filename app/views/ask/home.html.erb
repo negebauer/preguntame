@@ -12,10 +12,18 @@
             <%= text_area_tag :question, nil, class: "question form-control",placeholder: "Escribe un pregunta acá"  %>
         </div>
         <div class="form-group">
-            <%= submit_tag "Preguntame!", class: "form-control btn btn-default" %><br><br>
+            <%= submit_tag "Preguntame!", class: "form-control btn btn-primary" %><br><br>
         </div>
         <% end %>
 
+    </div>
+
+    <div class='contenedor'>
+        <%= button_tag "¿Como está Chile?", class: 'question-fixed btn btn-default btn-block' %>
+
+    </div>
+
+    <div class='contenedor'>
         <div class="error"></div>
         <div class="response"></div>
     </div>

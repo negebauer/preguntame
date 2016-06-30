@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         namespace :v1 do
             root 'api#index'
             post 'question', controller: 'question'
+            post 'question_fixed', controller: 'question'
         end
     end
 end

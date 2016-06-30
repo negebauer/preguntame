@@ -19,6 +19,11 @@ class Api::V1::QuestionController < Api::V1::ApiController
         render json: { 'response': response }
     end
 
+    def question_fixed
+        # TODO: Hacer la query correspondiente rene!
+        render json: { 'response': 'como esta chile!!!!' }
+    end
+
     private
 
     def respond(question)
