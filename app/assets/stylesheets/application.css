@@ -28,6 +28,10 @@
     margin-right: auto;
     margin-top: 1.8vw;
     max-width: 150px;
+    background: transparent;
+}
+.logo_app.-webkit-transform, .logo_app.-moz-transform, .logo_app.transform {
+    background-color: transparent;;
 }
 .contenedor {
     /*margin-left: 10vw;*/

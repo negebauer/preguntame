@@ -6,7 +6,40 @@ $(function() {
     questionProcessing()
     questionExecute(ev.target.innerHTML)
   })
+  // var bird = $('.logo_app')
+  // bird.on('mouseover', function(ev) {
+  //   if (bird.attr('data-rotating') == 0) {
+  //     rotateAnimation(bird, 10)
+  //   }
+  // })
 })
+
+// function rotateAnimation(elem, speed) {
+//   var logo = $('.logo_app')
+//   var rotating = logo.attr("data-rotating")
+//   var degrees = logo.attr("data-degrees")
+//   logo.css({
+//     "transform": 'rotate(' + degrees + 'deg)',
+//     "-ms-transform": 'rotate(' + degrees + 'deg)',
+//     "-moz-transform": 'rotate(' + degrees + 'deg)',
+//     "-webkit-transform": 'rotate(' + degrees + 'deg)',
+//     "-o-transform": 'rotate(' + degrees + 'deg)',
+//     "-webkit-transform-style": 'preserve-3d',
+//     "-webkit-backface-visibility": 'hidden',
+//     "-webkit-backface-visibility": 'hidden'
+//   });
+//   degrees++
+//   if (degrees > 359) {
+//     degrees = 1
+//   }
+//   logo.attr("data-degrees", degrees)
+//   if (logo.attr('data-rotating') == '0') {
+//     logo.attr("data-rotating", 1)
+//   }
+//   setTimeout(function() {
+//     rotateAnimation(elem, speed)
+//   }, speed);
+// }
 
 // SINGLE QUESTION
 
@@ -135,59 +168,59 @@ function versusMake(ev) {
 function versusExecute(question1, question2) {
   // question 1
   $.ajax({
-    type: "POST",
-    url: "/api/v1/question",
-    data: {
-      "question": question1
-    },
-    success: function(result) {
-      var html = '<h3>Respuesta a: ' + question1 + '</h3><center>'
-      html += '<br><br><div class= percentagebox>'
-      html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
-      html += '<h4>El estado emocional es: ' + result['score'] + '</h4>'
-      html += '<h10>Intervalo de confianza: ' + result['confidence'] + '%</h10>'
-      html += ""
-      html += '</div><br>'
-      html += '<h3>Un análisis más detallado:</h3>'
-      html += '<div class= percentagebox>'
-      html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
-      html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
-      html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
-      $('.response1').html(html)
-    },
-    error: requestError
-  })
-  // question 2
+      type: "POST",
+      url: "/api/v1/question",
+      data: {
+        "question": question1
+      },
+      success: function(result) {
+        var html = '<h3>Respuesta a: ' + question1 + '</h3><center>'
+        html += '<br><br><div class= percentagebox>'
+        html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
+        html += '<h4>El estado emocional es: ' + result['score'] + '</h4>'
+        html += '<h10>Intervalo de confianza: ' + result['confidence'] + '%</h10>'
+        html += ""
+        html += '</div><br>'
+        html += '<h3>Un análisis más detallado:</h3>'
+        html += '<div class= percentagebox>'
+        html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
+        html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
+        html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
+        html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
+        html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
+        html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
+        $('.response1').html(html)
+      },
+      error: requestError
+    })
+    // question 2
   $.ajax({
-    type: "POST",
-    url: "/api/v1/question",
-    data: {
-      "question": question2
-    },
-    success: function(result) {
-      var html = '<h3>Respuesta a: ' + question2 + '</h3><center>'
-      html += '<br><br><div class= percentagebox>'
-      html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
-      html += '<h4>El estado emocional es: ' + result['score'] + '</h4>'
-      html += '<h10>Intervalo de confianza: ' + result['confidence'] + '%</h10>'
-      html += ""
-      html += '</div><br>'
-      html += '<h3>Un análisis más detallado:</h3>'
-      html += '<div class= percentagebox>'
-      html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
-      html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
-      html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
-      $('.response2').html(html)
-    },
-    error: requestError
-  })
-  // 3 best tweets
+      type: "POST",
+      url: "/api/v1/question",
+      data: {
+        "question": question2
+      },
+      success: function(result) {
+        var html = '<h3>Respuesta a: ' + question2 + '</h3><center>'
+        html += '<br><br><div class= percentagebox>'
+        html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
+        html += '<h4>El estado emocional es: ' + result['score'] + '</h4>'
+        html += '<h10>Intervalo de confianza: ' + result['confidence'] + '%</h10>'
+        html += ""
+        html += '</div><br>'
+        html += '<h3>Un análisis más detallado:</h3>'
+        html += '<div class= percentagebox>'
+        html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
+        html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
+        html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
+        html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
+        html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
+        html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
+        $('.response2').html(html)
+      },
+      error: requestError
+    })
+    // 3 best tweets
   $.ajax({
     type: "POST",
     url: "/api/v1/question",
