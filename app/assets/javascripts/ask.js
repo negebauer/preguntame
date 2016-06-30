@@ -7,7 +7,7 @@ function makeQuestion(ev) {
   // Bloquear post del formulario
   ev.preventDefault()
   // Borrar info anterior
-  cleanResponse()
+  questionProcessing()
     // Obtenemos la pregunta
   var question = $('textarea.question').val()
   var error = isQuestionValid(question)
@@ -46,6 +46,7 @@ function questionExecute(question) {
       $('.response').html(html)
     },
     error: function(req, status, error) {
+      cleanResponse()
       var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta. (3)</h4>' + error + '</div>'
       $('.error').html(html)
       $('.closebtn').on('click', cleanResponse)
@@ -54,7 +55,7 @@ function questionExecute(question) {
 }
 
 function makeQuestionFixed() {
-  cleanResponse()
+  questionProcessing()
   $.ajax({
     type: "POST",
     url: "/api/v1/question_fixed",
@@ -63,6 +64,7 @@ function makeQuestionFixed() {
       $('.response').html(html)
     },
     error: function(req, status, error) {
+      cleanResponse()
       var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta. (1)</h4>' + error + '</div>'
       $('.error').html(html)
       $('.closebtn').on('click', cleanResponse)
@@ -70,7 +72,13 @@ function makeQuestionFixed() {
   })
 }
 
+function questionProcessing() {
+  cleanResponse()
+  $('.response').html('<h4>Cargando...</h4>')
+}
+
 function questionError(error) {
+  cleanResponse()
   var html = '<div class="alert"><span class="closebtn">&times;</span><h4>La pregunta ingresada es inválida, intenta con otra pregunta.</h4>  </div>'
   $('.error').html(html)
   $('.closebtn').on('click', cleanResponse)
