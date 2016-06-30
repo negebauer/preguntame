@@ -63,8 +63,8 @@ function questionExecute(question) {
         k++
       }
       html += '</div>'
-      html += '<br><h3>Y los 5 Tweets más destacados en relación a tu pregunta ...</h3>'
       html += '<div class=row><div class=col-md-6>'
+      html += '<br><h3>5 Tweets más destacados</h3>'
       tweets = result['retweets']
       for (var i in tweets) {
         html += '<div class = "tweetbox">' + tweets[i].text + '</div>'
