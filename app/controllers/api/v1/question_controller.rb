@@ -1,6 +1,8 @@
 class Api::V1::QuestionController < Api::V1::ApiController
     require 'rubygems'
     require 'twitter'
+    require 'uri'
+    require 'net/http'
 
     before_action :stop_words_check
     before_action :stop_words_load
