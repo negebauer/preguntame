@@ -56,15 +56,29 @@ function questionExecute(question) {
       html += '<h3>Quizás te interese saber cuales son los conceptos claves de tu pregunta...</h3>'
       html += '<br><div class= percentagebox>'
       concepts = result['key_concepts']
+      k = 0
       for (var i in concepts) {
+        if (k > 10) break
         html += '<p>' + concepts[i] + '</p>'
+        k++
       }
       html += '</div>'
       html += '<br><h3>Y los 5 Tweets más destacados en relación a tu pregunta ...</h3>'
+      html += '<div class=row><div class=col-md-6>'
       tweets = result['retweets']
       for (var i in tweets) {
         html += '<div class = "tweetbox">' + tweets[i].text + '</div>'
       }
+      html += '</div>'
+      clusters = result['clusters']
+      console.log(clusters)
+      html += '<div class=col-md-6>'
+      html += '<br><h3> Twitter Opina:</h3>'
+      for (var i in clusters) {
+        console.log(i)
+        html += '<div class = "tweetbox">' + clusters[i] + '</div>'
+      }
+      html += '</div></div>'
       html += '</center>'
       $('.response').html(html)
     },
