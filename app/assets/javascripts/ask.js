@@ -1,5 +1,6 @@
 $(function() {
   $('form.question').on('submit', makeQuestion)
+  $('form.versus').on('submit', makeVersus)
   $('.question-fixed').on('click', makeQuestionFixed)
   $('.question-demo').on('click', function(ev) {
     questionProcessing()
@@ -21,6 +22,26 @@ function makeQuestion(ev) {
     questionExecute(question)
   }
 }
+
+function makeVersus(ev) {
+  // Bloquear post del formulario
+  ev.preventDefault()
+    // Borrar info anterior
+  questionProcessing()
+    // Obtenemos la pregunta
+  var question1 = $('textarea.question1').val()
+  var question2 = $('textarea.question2').val()
+  var error1 = isQuestionValid(question1)
+  var error2 = isQuestionValid(question2)
+  if (error1){
+    questionError(error1)
+  }
+  else {
+    questionExecute(question1)
+    //questionExecute(question2)
+  }
+}
+
 
 function cleanResponse() {
   $('.error').html('')
