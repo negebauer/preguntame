@@ -53,6 +53,11 @@ function questionExecute(question) {
       html += '<h4>Tweets Neutros: ' + result['neu'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
       html += twitter_button(question, 'Neutro', result['neu']) + '</div><br>'
+      html += '<h4>Tweets Positivo</h4>'
+      html += '<div class=tweetbox>' + result['twet_pos'] + '</div>'
+      html += '<h4>Tweets Negativo</h4>'
+      html += '<div class=tweetbox>' + result['twet_neg']  + '</div>'
+
       html += '<h3>Quizás te interese saber cuales son los conceptos claves de tu pregunta...</h3>'
       html += '<br><div class= percentagebox>'
       concepts = result['key_concepts']

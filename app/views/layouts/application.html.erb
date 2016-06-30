@@ -34,6 +34,8 @@
 </html>
 <script>
     function rotateAnimation(elem,speed){
+
+      var degrees = 30
         if(navigator.userAgent.match("Chrome")){
             elem.style.WebkitTransform = "rotate("+degrees+"deg)";
         } else if(navigator.userAgent.match("Firefox")){
@@ -50,7 +52,9 @@
         if(degrees > 359){
             degrees = 1;
         }
+
         document.getElementById("status").innerHTML = "rotate("+degrees+"deg)";
+
     }
     var bird = document.getElementsByClassName("logo_app");
     bird.onmousemove = rotateAnimation(bird, 30)

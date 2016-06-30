@@ -24,6 +24,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         data, score, confidence = tweets_data(tweets)
         pos, neg, neu = tweets_scores(data)
         key_concepts = tweets_key_concepts(data).map { |key, val| key }
+        twet_pos,twet_neg = min_max(data)
         scores = {'P' => 'Positivo', 'P+' => 'Muy positivo', 'N' => 'Negativo', 'N+' => 'Muy negativo', 'NEU' => 'Neutro', 'NONE' => 'No hay'}
 
         # Tweet cluster
@@ -31,7 +32,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         json = cluster_conexion(message, id)
         cluster_list = processing_cluster_list(json)
 
-        render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list }
+        render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list, twet_pos: twet_pos, twet_neg: twet_neg}
     end
 
 
@@ -56,28 +57,45 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
     private
 
+    def min_max(data)
+      negativo = ""
+      positivo = ""
+      data['sentence_list'].each do |tweet|
+        if (tweet["score_tag"] == "N+") && negativo == ""
+          negativo = tweet["text"]
+        end
+        if (tweet["score_tag"] == "P") && positivo == ""
+          positivo = tweet["text"]
+        end
+      end
+      return positivo,negativo
+    end
+
+
     def tweets_for_question(question)
         @@client.search(question, result_type: "today").take(100).collect
     end
 
-    def processing_cluster_list(json)
-        cluster_list = json['cluster_list'][1..3]
-        cluster_tweets = []
-        cluster_list.each do |cluster|
-            cluster["document_list"].keys.each do |index|
-                mensaje = cluster["document_list"][index].split("http")
-                if !cluster_tweets.include? mensaje[0] && mensaje[0] != "\n"  && mensaje[0] != ""
-                    cluster_tweets << mensaje[0]
-                end
-            end
+
+    def processing_cluster_list(jason)
+      cluster_list = jason['cluster_list'][1..3]
+      cluster_tweets = []
+      cluster_list.each do |cluster|
+        cluster["document_list"].keys.each do |index|
+          mensaje = cluster["document_list"][index].split("http")
+          if !cluster_tweets.include? mensaje[0]
+            cluster_tweets << mensaje[0]
+          end
         end
-        return cluster_tweets[1..5]
+      end
+      return cluster_tweets[1..5]
+
     end
 
     def tweets_for_cluster(tweets)
       message = ""
       id = ""
-      total = tweets.count
+      total = tweets.count +1
       tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n"}
       total.times {|i| id = id + String(i) + "\n"}
       return message, id
@@ -144,7 +162,15 @@ class Api::V1::QuestionController < Api::V1::ApiController
                 items[key].nil? ? items[key] = 1 : items[key] += 1
             } if !polarity['sentimented_entity_list'].nil?
         }}}
-        return items
+        newitems = {}
+        items.keys.each{|k|
+          if items.keys.include? k[1..-1]
+             newitems[k[1..-1]] = items[k[1..-1]] + items[k]
+          else
+            newitems[k] = items[k]
+          end}
+        newitems = newitems.sort_by{|key, value| value}.reverse
+        return newitems
     end
 
     def stop_words_check
