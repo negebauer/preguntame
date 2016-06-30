@@ -20,10 +20,10 @@ class Api::V1::QuestionController < Api::V1::ApiController
         tweets = tweets_for_question(data.join(' '))
         retweets = tweets_retweeted(tweets, 3)
         data, score, confidence = tweets_data(tweets)
+        # test_data(tweets)
         pos, neg, neu = tweets_scores(data)
         key_concepts = tweets_key_concepts(data).map { |key, val| key }
         scores = {'P' => 'Positivo', 'P+' => 'Muy positivo', 'N' => 'Negativo', 'N+' => 'Muy negativo', 'NEU' => 'Neutro', 'NONE' => 'No hay'}
-
         render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts }
     end
 
@@ -50,16 +50,46 @@ class Api::V1::QuestionController < Api::V1::ApiController
     private
 
     def tweets_for_question(question)
-        @@client.search(question, result_type: "today").take(10).collect
+        @@client.search(question, result_type: "today").take(100).collect
     end
 
     def tweets_retweeted(tweets, amount = 3)
         tweets.sort_by { |t| t.retweet_count }.reverse[0...amount].map { |t| { 'text': t.full_text } }
     end
 
+    # def test_data(tweets)
+        # datas = []
+        # tweets.each { |t|
+        #     message = t.full_text.gsub("\n", ' ')
+        #     url = URI('http://api.meaningcloud.com/sentiment-2.1')
+        #
+        #     http = Net::HTTP.new(url.host, url.port)
+        #
+        #     request = Net::HTTP::Post.new(url)
+        #     request['content-type'] = 'application/x-www-form-urlencoded'
+        #     request.body = "key=68e8c30899c70cee783b176a3c6eb140&lang=es&txt=#{message}"
+        #
+        #     response = http.request(request)
+        #     datas.append(JSON.parse(response.body))
+        #     sleep(0.2)
+        # }
+        # failed = 0
+        # scores = {'P' => 0, 'P+' => 0, 'N' => 0, 'N+' => 0, 'NEU' => 0, 'NONE' => 0}
+        # datas.each { |data|
+        #     if data['score_tag'].nil?
+        #         failed += 1
+        #     else
+        #         scores[data['score_tag']] += 1
+        #     end
+        # }
+        # puts "---- POR SEPARADO -----"
+        # puts scores
+        # puts failed
+    # end
+
     def tweets_data(tweets)
         message = ""
-        tweets.each { |t| message += t.full_text + "\n" }
+        tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n" }
 
         url = URI('http://api.meaningcloud.com/sentiment-2.1')
 
@@ -78,6 +108,8 @@ class Api::V1::QuestionController < Api::V1::ApiController
         scores = {'P' => 0, 'P+' => 0, 'N' => 0, 'N+' => 0, 'NEU' => 0, 'NONE' => 0}
         return 0, 0, 0 if data['sentence_list'].nil?
         data['sentence_list'].each { |tweet| scores[tweet['score_tag']] += 1 }
+        puts '--- TODO JUNTO PUNTAJES ---'
+        puts scores
         scores.delete('NONE')
         total = scores.map { |key, value| value }.inject(:+)
         return 0, 0, 0 if total == 0
