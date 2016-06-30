@@ -184,7 +184,6 @@ class Api::V1::QuestionController < Api::V1::ApiController
                 items[key].nil? ? items[key] = 1 : items[key] += 1
             } if !polarity['sentimented_entity_list'].nil?
         }}}
-        puts items
         newitems = {}
         items.keys.each{|k|
           if items.keys.include? k[1..-1]
@@ -193,7 +192,6 @@ class Api::V1::QuestionController < Api::V1::ApiController
             newitems[k] = items[k]
           end}
         newitems = newitems.sort_by{|key, value| value}.reverse
-        puts newitems
         return newitems
     end
 
