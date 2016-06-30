@@ -37,7 +37,9 @@ function questionExecute(question) {
       "question": question
     },
     success: function(result) {
-      var html = '<h3>Respuesta</h3><p>' + result['response'] + '</p>'
+      var url = 'https://publish.twitter.com/oembed?url=' + result['response'][0]
+      
+      var html = '<h3>Respuesta</h3><p>' + xmlHttp.responseText + '</p>'
       $('.response').html(html)
     },
     error: function(req, status, error) {
