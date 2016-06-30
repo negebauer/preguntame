@@ -1,6 +1,10 @@
 $(function() {
   $('form.question').on('submit', makeQuestion)
   $('.question-fixed').on('click', makeQuestionFixed)
+  $('.question-demo').on('click', function(ev) {
+    questionProcessing()
+    questionExecute(ev.target.innerHTML)
+  })
 })
 
 function makeQuestion(ev) {
