@@ -161,7 +161,7 @@ function versusExecute(question1, question2) {
       "question": question2
     },
     success: function(result) {
-      var html = '<br><h3>Respuesta ' + question2 + '</h3><center>'
+      var html = '<h3>Respuesta ' + question2 + '</h3><center>'
       html += '<br><br><div class= percentagebox>'
       html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
       html += '<h4>Puntaje: ' + result['score'] + '</h4>'

@@ -18,6 +18,15 @@ class Api::V1::QuestionController < Api::V1::ApiController
         filter = Stopwords::Filter.new @@stop_words
         data = filter.filter question.split
         tweets = tweets_for_question(data.join(' '))
+
+        #cluster
+
+        message,id = tweets_for_cluster(tweets)
+        jason = cluster_conexion(message, id)
+        puts '---- LEEEEER ---'
+        puts jason
+
+
         retweets = tweets_retweeted(tweets, 3)
         data, score, confidence = tweets_data(tweets)
         pos, neg, neu = tweets_scores(data)
@@ -52,6 +61,32 @@ class Api::V1::QuestionController < Api::V1::ApiController
         @@client.search(question, result_type: "today").take(100).collect
     end
 
+    def tweets_for_cluster(tweets)
+      message = ""
+      id = ""
+      total = tweets.count
+      tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n"}
+      total.times {|i| id = id + String(i) + "\n"}
+      return message, id
+    end
+
+    def cluster_conexion(message, id)
+      url = URI('http://api.meaningcloud.com/clustering-1.1')
+
+      http = Net::HTTP.new(url.host, url.port)
+
+      request = Net::HTTP::Post.new(url)
+      request['content-type'] = 'application/x-www-form-urlencoded'
+      request.body = "key=68e8c30899c70cee783b176a3c6eb140&lang=es&txt=#{message}&id=#{id}"
+
+      response = http.request(request)
+      data = JSON.parse(response.body)
+      return data
+
+    end
+
+
+
     def tweets_retweeted(tweets, amount = 3)
         tweets.sort_by { |t| t.retweet_count }.reverse[0...amount].map { |t| { 'text': t.full_text } }
     end
@@ -77,8 +112,6 @@ class Api::V1::QuestionController < Api::V1::ApiController
         scores = {'P' => 0, 'P+' => 0, 'N' => 0, 'N+' => 0, 'NEU' => 0, 'NONE' => 0}
         return 0, 0, 0 if data['sentence_list'].nil?
         data['sentence_list'].each { |tweet| scores[tweet['score_tag']] += 1 }
-        puts '--- TODO JUNTO PUNTAJES ---'
-        puts scores
         scores.delete('NONE')
         total = scores.map { |key, value| value }.inject(:+)
         return 0, 0, 0 if total == 0
