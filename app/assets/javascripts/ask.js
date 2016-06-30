@@ -37,13 +37,11 @@ function questionExecute(question) {
       "question": question
     },
     success: function(result) {
-      var url = 'https://publish.twitter.com/oembed?url=' + result['response'][0]
-      
-      var html = '<h3>Respuesta</h3><p>' + xmlHttp.responseText + '</p>'
+      var html = '<h3>Respuesta</h3><p>' + result['html'] + '</p>'
       $('.response').html(html)
     },
     error: function(req, status, error) {
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta.</h4>' + error + '</div>'
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta. (3)</h4>' + error + '</div>'
       $('.error').html(html)
       $('.closebtn').on('click', cleanResponse)
     }
@@ -60,7 +58,7 @@ function makeQuestionFixed() {
       $('.response').html(html)
     },
     error: function(req, status, error) {
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta.</h4>' + error + '</div>'
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta. (1)</h4>' + error + '</div>'
       $('.error').html(html)
       $('.closebtn').on('click', cleanResponse)
     }
