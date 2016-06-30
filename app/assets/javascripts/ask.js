@@ -68,12 +68,7 @@ function questionExecute(question) {
       html += '</center>'
       $('.response').html(html)
     },
-    error: function(req, status, error) {
-      cleanResponse()
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (3)</h3>' + error + '</div>'
-      $('.error').html(html)
-      $('.closebtn').on('click', cleanResponse)
-    }
+    error: requestError
   })
 }
 
@@ -89,12 +84,7 @@ function makeQuestionFixed() {
       html += '<img class="emotion" src="/assets/' + result['response'] + '"/>'
       $('.response').html(html)
     },
-    error: function(req, status, error) {
-      cleanResponse()
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (1)</h3>' + error + '</div>'
-      $('.error').html(html)
-      $('.closebtn').on('click', cleanResponse)
-    }
+    error: requestError
   })
 }
 
@@ -149,12 +139,7 @@ function versusExecute(question1, question2) {
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
       $('.response1').html(html)
     },
-    error: function(req, status, error) {
-      cleanResponse()
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (4)</h3>' + error + '</div>'
-      $('.error').html(html)
-      $('.closebtn').on('click', cleanResponse)
-    }
+    error: requestError
   })
   // question 2
   $.ajax({
@@ -181,12 +166,7 @@ function versusExecute(question1, question2) {
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
       $('.response2').html(html)
     },
-    error: function(req, status, error) {
-      cleanResponse()
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (4)</h3>' + error + '</div>'
-      $('.error').html(html)
-      $('.closebtn').on('click', cleanResponse)
-    }
+    error: requestError
   })
   // 3 best tweets
   $.ajax({
@@ -210,12 +190,7 @@ function versusExecute(question1, question2) {
       html += '</center>'
       $('.response3').html(html)
     },
-    error: function(req, status, error) {
-      cleanResponse()
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (4)</h3>' + error + '</div>'
-      $('.error').html(html)
-      $('.closebtn').on('click', cleanResponse)
-    }
+    error: requestError
   })
 }
 
@@ -232,9 +207,16 @@ function cleanResponse() {
   $('.response').html('')
 }
 
-function questionError(error) {
+function questionInvalid() {
   cleanResponse()
   var html = '<div class="alert"><span class="closebtn">&times;</span><h3>La pregunta ingresada es inválida, intenta con otra pregunta.</h3>  </div>'
+  $('.error').html(html)
+  $('.closebtn').on('click', cleanResponse)
+}
+
+function requestError(req, status, error) {
+  cleanResponse()
+  var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando tu pregunta, intenta más tarde o con otra pregunta.</h3>  </div>'
   $('.error').html(html)
   $('.closebtn').on('click', cleanResponse)
 }
