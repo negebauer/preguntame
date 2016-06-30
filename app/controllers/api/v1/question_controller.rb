@@ -36,7 +36,8 @@ class Api::V1::QuestionController < Api::V1::ApiController
         end
 
         # Register question
-        Question.new({ question: question, score: score })
+        @question = Question.new({ question: question, score: score })
+        @question.save
 
         render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list, twet_pos: twet_pos, twet_neg: twet_neg}
     end

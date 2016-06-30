@@ -1,0 +1,11 @@
+<center>
+    <div class="container-fluid">
+        <div class='contenedor'>
+            <% @questions.each do |q| %>
+            <p>
+                <%= 'Valor: ' + q.score + ' Question: ' + q.question %>
+            </p>
+            <% end %>
+        </div>
+    </div>
+</center>

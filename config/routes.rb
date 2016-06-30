@@ -2,6 +2,7 @@ Rails.application.routes.draw do
     get 'ask/home'
     root 'ask#home'
     get 'ask/versus'
+    get 'ask/questions'
 
     namespace :api do
         root 'api#index'
