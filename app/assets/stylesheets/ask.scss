@@ -7,6 +7,13 @@ body {
 .nav {
     background-color: white;
     border-radius: 3px;
+    color: currentColor;
+}
+.nav a {
+    color: #337ab7;
+}
+.nav.active {
+    color: #337ab7;
 }
 .response {
     display: table;
