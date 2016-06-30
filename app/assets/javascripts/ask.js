@@ -60,7 +60,8 @@ function makeQuestionFixed() {
     type: "POST",
     url: "/api/v1/question_fixed",
     success: function(result) {
-      var html = '<h3>Respuesta</h3><p>' + result['response'] + '</p>'
+      var html = '<h3>Respuesta</h3>'
+      html += '<img src="/assets/' + result['response'] + '"/>'
       $('.response').html(html)
     },
     error: function(req, status, error) {

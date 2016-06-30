@@ -37,25 +37,9 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
         response = http.request(request)
         data =  JSON.parse(response.body)
+        image = data["score_tag"] + '.png'
 
-        case data["score_tag"]
-        when "P+"
-            score = ":D"
-        when "P"
-            score = ":)"
-        when "NEU"
-            score = ":|"
-        when "N"
-            score = ":("
-        when "N+"
-            score = ":C"
-        when "NONE"
-            score = ":S"
-        else
-            score = "ERROR"
-        end
-
-        render json: { 'response': score }
+        render json: { 'response': image }
     end
 
     private
@@ -87,8 +71,8 @@ class Api::V1::QuestionController < Api::V1::ApiController
             @@client = Twitter::REST::Client.new do |config|
                 config.consumer_key        = "jG4IFhzllIJCJDCKEoY8s1IFI"
                 config.consumer_secret     = "1hsqWBEWOQLwk7v708PYIstw6DgJE9wFVlYcENXW5nYnayULpw"
-                config.access_token        = "109609974-QonFgD89kFYEFfHF8mUwml7xXlCsuUrAJhZSyHRq"
-                config.access_token_secret = "eTAxguM6b0IZV0yOJ6VF7K7V6ocygs6GmGWtpdIBEIhiT"
+                config.access_token        = "109609974-LgXglwk0qrQGSM0kAlfsXFQntmr6vPtBKkPTFIgY"
+                config.access_token_secret = "gYWOfI2n7YJrv9wdLmx1aeO9kajtSl93IgMM2muu0GMmE"
             end
         end
     end
