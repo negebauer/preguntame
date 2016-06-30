@@ -42,7 +42,6 @@ function questionExecute(question) {
     },
     success: function(result) {
       var html = '<h3>Respuesta</h3><center>'
-      html += "<a href=\"https://twitter.com/intent/tweet?button_hashtag=Preguntame&text=otra_wea\" class=\"twitter-hashtag-button\" data-size=\"large\" data-related=\"rtacuna\" data-url=\"http://www.google.com\">Tweet #Preguntame</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>"
       html += '<br><br><div class= percentagebox>'
       html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
       html += '<h4>Puntaje: ' + result['score'] + '</h4>'
@@ -52,10 +51,13 @@ function questionExecute(question) {
       html += '<div class= percentagebox>'
       html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
+      html += twitter_button(question, 'Positivo', result['pos'])
       html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
+      html += twitter_button(question, 'Negativo', result['neg'])
       html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div></div>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
+      html += twitter_button(question, 'Neutro', result['neu']) + '</div>'
       html += '<br><div class= percentagebox><h4>Conceptos clave</h4>'
       concepts = result['key_concepts']
       for (var i in concepts) {
@@ -108,4 +110,9 @@ function questionError(error) {
   var html = '<div class="alert"><span class="closebtn">&times;</span><h3>La pregunta ingresada es inválida, intenta con otra pregunta.</h3>  </div>'
   $('.error').html(html)
   $('.closebtn').on('click', cleanResponse)
+}
+
+function twitter_button(question, measure, value) {
+  var question2 = question.split('?').join('')
+  return "<a href=\"https://twitter.com/intent/tweet?button_hashtag=" + measure + "&text=" + question2 + " " + value.toString() + " @Preguntame" + "\" class=\"twitter-hashtag-button\" data-size=\"large\" data-related=\"rtacuna\" data-url=\"http://preguntame.io\">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>"
 }
