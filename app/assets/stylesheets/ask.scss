@@ -3,5 +3,16 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 body{
   background-color:  #1dcaff
+}
 
+.response {
+    display: table;
+    margin: 0px auto;
+}
+
+img.emotion {
+    width: 150px;
+    height: 150px;
+    display: table;
+    margin: 0px auto;
 }

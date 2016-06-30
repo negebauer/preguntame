@@ -14,6 +14,12 @@
  *= require_self
  */
 
+ body {
+     color: white;
+ }
+ h1 {
+     color: white;
+ }
 .logo_app {
     content: url('twitter-logo.png');
     width: 20%;
@@ -23,16 +29,10 @@
     margin-top: 1.8vw;
     max-width: 150px;
 }
-h1 {
-    color: white;
-}
 .contenedor {
     margin-left: 20vw;
     margin-right: 20vw;
     padding-top: 20px;
-}
-body {
-    color: white;
 }
 .alert {
     padding: 20px;

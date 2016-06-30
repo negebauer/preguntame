@@ -47,7 +47,7 @@ function questionExecute(question) {
     },
     error: function(req, status, error) {
       cleanResponse()
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta. (3)</h4>' + error + '</div>'
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (3)</h3>' + error + '</div>'
       $('.error').html(html)
       $('.closebtn').on('click', cleanResponse)
     }
@@ -60,13 +60,13 @@ function makeQuestionFixed() {
     type: "POST",
     url: "/api/v1/question_fixed",
     success: function(result) {
-      var html = '<h3>Respuesta</h3>'
-      html += '<img src="/assets/' + result['response'] + '"/>'
+      var html = '<h3>Respuesta - Chile está:</h3>'
+      html += '<img class="emotion" src="/assets/' + result['response'] + '"/>'
       $('.response').html(html)
     },
     error: function(req, status, error) {
       cleanResponse()
-      var html = '<div class="alert"><span class="closebtn">&times;</span><h4>Hubo un error procesando la pregunta, intenta con otra pregunta. (1)</h4>' + error + '</div>'
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (1)</h3>' + error + '</div>'
       $('.error').html(html)
       $('.closebtn').on('click', cleanResponse)
     }
@@ -80,7 +80,7 @@ function questionProcessing() {
 
 function questionError(error) {
   cleanResponse()
-  var html = '<div class="alert"><span class="closebtn">&times;</span><h4>La pregunta ingresada es inválida, intenta con otra pregunta.</h4>  </div>'
+  var html = '<div class="alert"><span class="closebtn">&times;</span><h3>La pregunta ingresada es inválida, intenta con otra pregunta.</h3>  </div>'
   $('.error').html(html)
   $('.closebtn').on('click', cleanResponse)
 }
