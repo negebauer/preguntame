@@ -22,6 +22,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         # Tweet analysis
         retweets = tweets_retweeted(tweets, 5)
         data, score, confidence = tweets_data(tweets)
+
         pos, neg, neu = tweets_scores(data)
         key_concepts = tweets_key_concepts(data).map { |key, val| key }
         twet_pos,twet_neg = min_max(data)
@@ -31,6 +32,9 @@ class Api::V1::QuestionController < Api::V1::ApiController
         message, id = tweets_for_cluster(tweets)
         json = cluster_conexion(message, id)
         cluster_list = processing_cluster_list(json)
+        if cluster_list.empty?
+          cluster_list = ["No hay tweets de opinion"]
+        end
 
         render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list, twet_pos: twet_pos, twet_neg: twet_neg}
     end
@@ -58,13 +62,13 @@ class Api::V1::QuestionController < Api::V1::ApiController
     private
 
     def min_max(data)
-      negativo = ""
-      positivo = ""
+      negativo = "No hay tweet destacado"
+      positivo = "No hay tweet destacado"
       data['sentence_list'].each do |tweet|
-        if (tweet["score_tag"] == "N+") && negativo == ""
+        if (tweet["score_tag"] == "N+") && negativo == "No hay tweet destacado"
           negativo = tweet["text"]
         end
-        if (tweet["score_tag"] == "P") && positivo == ""
+        if (tweet["score_tag"] == "P") && positivo == "No hay tweet destacado"
           positivo = tweet["text"]
         end
       end
@@ -117,15 +121,13 @@ class Api::V1::QuestionController < Api::V1::ApiController
     def tweets_retweeted(tweets, amount)
         retweeted = {}
         tweets.sort_by { |t| t.retweet_count }.reverse.each { |t| retweeted[t.full_text] = t.retweet_count }
-        puts retweeted
-        puts retweeted.map { |key, value| key }
         retweeted = retweeted.map { |key, value| key }
         retweeted[0...amount]
     end
 
     def tweets_data(tweets)
         message = ""
-        tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n" }
+        tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n\n" }
 
         url = URI('http://api.meaningcloud.com/sentiment-2.1')
 
@@ -162,6 +164,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
                 items[key].nil? ? items[key] = 1 : items[key] += 1
             } if !polarity['sentimented_entity_list'].nil?
         }}}
+        puts items
         newitems = {}
         items.keys.each{|k|
           if items.keys.include? k[1..-1]
@@ -170,6 +173,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
             newitems[k] = items[k]
           end}
         newitems = newitems.sort_by{|key, value| value}.reverse
+        puts newitems
         return newitems
     end
 

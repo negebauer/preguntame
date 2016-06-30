@@ -68,14 +68,16 @@ function questionExecute(question) {
       "question": question
     },
     success: function(result) {
-      var html = '<h3>Respuesta</h3>' + question + '<center>'
+      var html = '<h2>Respuesta</h2>' + question + '<center>'
       html += '<br><br><div class= percentagebox>'
       html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
       html += '<h4>El estado emocional de tu pregunta es: ' + result['score'] + '</h4>'
       html += '<h10>Intervalo de confianza: ' + result['confidence'] + '%</h10>'
-      html += ""
-      html += '</div><br>'
+      html += "</div>"
       html += '<h3>Ahora un análisis más detallado del estado emocional...</h3>'
+      html += "<div class=row>"
+      html += '<div class=col-md-6>'
+      html += '<br>'
       html += '<div class= percentagebox>'
       html += '<h4>Tweets Positivos: ' + result['pos'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
@@ -86,10 +88,13 @@ function questionExecute(question) {
       html += '<h4>Tweets Neutros: ' + result['neu'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
       html += twitter_button(question, 'Neutro', result['neu']) + '</div><br>'
+      html += '</div>'
+      html += '<div class=col-md-6><br><br><br><div class=row>'
       html += '<h4>Tweets Positivo</h4>'
       html += '<div class=tweetbox>' + result['twet_pos'] + '</div>'
       html += '<h4>Tweets Negativo</h4>'
       html += '<div class=tweetbox>' + result['twet_neg']  + '</div>'
+      html += '</div></div></div>'
 
       html += '<h3>Quizás te interese saber cuales son los conceptos claves de tu pregunta...</h3>'
       html += '<br><div class= percentagebox>'
