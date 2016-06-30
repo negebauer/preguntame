@@ -42,7 +42,6 @@ class Api::V1::QuestionController < Api::V1::ApiController
         pos, neg, neu = tweets_scores(data)
         key_concepts = tweets_key_concepts(data).map { |key, val| deleter key }[0...10]
         twet_pos,twet_neg = min_max(data)
-        scores = {'P' => 'Positivo', 'P+' => 'Muy positivo', 'N' => 'Negativo', 'N+' => 'Muy negativo', 'NEU' => 'Neutro', 'NONE' => 'No hay'}
 
         # Tweet cluster
         message, id = tweets_for_cluster(tweets)
@@ -56,7 +55,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         @question = Question.new({ question: question, score: score })
         @question.save
 
-        render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list, twet_pos: twet_pos, twet_neg: twet_neg}
+        render json: { retweets: retweets, score: score_txt(pos, neg, neu), confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list, twet_pos: twet_pos, twet_neg: twet_neg}
     end
 
 
@@ -81,18 +80,33 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
     private
 
+    def score_txt(pos, neg, neu)
+        if pos > 80
+            "Muy positivo"
+        elsif neg > 80
+            "Muy negativo"
+        elsif pos > 60
+            "Positivo"
+        elsif neg > 60
+            "Negativo"
+        else
+            "Neutro"
+        end
+    end
+
     def min_max(data)
-      negativo = "No hay tweet destacado"
-      positivo = "No hay tweet destacado"
-      data['sentence_list'].each do |tweet|
-        if (tweet["score_tag"] == "N+") && negativo == "No hay tweet destacado"
-          negativo = tweet["text"]
+        # TODO: Hacer decente. Sacar P+ o P. Sacar N+ o N
+        negativo = "No hay tweet destacado"
+        positivo = "No hay tweet destacado"
+        data['sentence_list'].each do |tweet|
+            if (tweet["score_tag"] == "N+") && negativo == "No hay tweet destacado"
+                negativo = tweet["text"]
+            end
+            if (tweet["score_tag"] == "P") && positivo == "No hay tweet destacado"
+                positivo = tweet["text"]
+            end
         end
-        if (tweet["score_tag"] == "P") && positivo == "No hay tweet destacado"
-          positivo = tweet["text"]
-        end
-      end
-      return positivo,negativo
+        return positivo,negativo
     end
 
 
