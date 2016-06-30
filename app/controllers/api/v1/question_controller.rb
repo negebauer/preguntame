@@ -97,7 +97,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
 
     def tweets_for_question(question)
-        @@client.search(question, result_type: "today").take(100).collect
+        @@client.search(question, result_type: "today", lang: "es").take(100).collect
     end
 
 
