@@ -42,10 +42,12 @@ function questionExecute(question) {
     },
     success: function(result) {
       var html = '<h3>Respuesta</h3><center>'
-      html += '<div class= percentagebox>'
+      html += "<a href=\"https://twitter.com/intent/tweet?button_hashtag=Preguntame&text=otra_wea\" class=\"twitter-hashtag-button\" data-size=\"large\" data-related=\"rtacuna\" data-url=\"http://www.google.com\">Tweet #Preguntame</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>"
+      html += '<br><br><div class= percentagebox>'
       html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
       html += '<h4>Puntaje: ' + result['score'] + '</h4>'
       html += '<h4>Intervalo de confianza: ' + result['confidence'] + '%</h4>'
+      html += ""
       html += '</div><br>'
       html += '<div class= percentagebox>'
       html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
