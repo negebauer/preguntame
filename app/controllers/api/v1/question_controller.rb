@@ -19,17 +19,18 @@ class Api::V1::QuestionController < Api::V1::ApiController
         data = filter.filter question.split
         tweets = tweets_for_question(data.join(' '))
 
-        #cluster
-
-        message,id = tweets_for_cluster(tweets)
-        jason = cluster_conexion(message, id)
-        cluster_list = processing_cluster_list(jason)
-
+        # Tweet analysis
         retweets = tweets_retweeted(tweets, 5)
         data, score, confidence = tweets_data(tweets)
         pos, neg, neu = tweets_scores(data)
         key_concepts = tweets_key_concepts(data).map { |key, val| key }
         scores = {'P' => 'Positivo', 'P+' => 'Muy positivo', 'N' => 'Negativo', 'N+' => 'Muy negativo', 'NEU' => 'Neutro', 'NONE' => 'No hay'}
+
+        # Tweet cluster
+        message, id = tweets_for_cluster(tweets)
+        json = cluster_conexion(message, id)
+        cluster_list = processing_cluster_list(json)
+
         render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list }
     end
 
@@ -59,22 +60,18 @@ class Api::V1::QuestionController < Api::V1::ApiController
         @@client.search(question, result_type: "today").take(100).collect
     end
 
-    def processing_cluster_list(jason)
-      cluster_list = jason['cluster_list'][1..3]
-      cluster_tweets = []
-      cluster_list.each do |cluster|
-        cluster["document_list"].keys.each do |index|
-          mensaje = cluster["document_list"][index].split("http")
-          puts mensaje
-          if !cluster_tweets.include? mensaje[0] && mensaje[0] != "\n"  && mensaje[0] != ""
-            cluster_tweets << mensaje[0]
-          end
+    def processing_cluster_list(json)
+        cluster_list = json['cluster_list'][1..3]
+        cluster_tweets = []
+        cluster_list.each do |cluster|
+            cluster["document_list"].keys.each do |index|
+                mensaje = cluster["document_list"][index].split("http")
+                if !cluster_tweets.include? mensaje[0] && mensaje[0] != "\n"  && mensaje[0] != ""
+                    cluster_tweets << mensaje[0]
+                end
+            end
         end
-      end
-      puts "--- LEERS ----"
-      puts cluster_tweets
-      return cluster_tweets[1..5]
-
+        return cluster_tweets[1..5]
     end
 
     def tweets_for_cluster(tweets)
@@ -96,15 +93,16 @@ class Api::V1::QuestionController < Api::V1::ApiController
       request.body = "key=68e8c30899c70cee783b176a3c6eb140&lang=es&txt=#{message}&id=#{id}"
 
       response = http.request(request)
-      data = JSON.parse(response.body)
-      return data
-
+      JSON.parse(response.body)
     end
 
-
-
-    def tweets_retweeted(tweets, amount = 3)
-        tweets.sort_by { |t| t.retweet_count }.reverse[0...amount].map { |t| { 'text': t.full_text } }
+    def tweets_retweeted(tweets, amount)
+        retweeted = {}
+        tweets.sort_by { |t| t.retweet_count }.reverse.each { |t| retweeted[t.full_text] = t.retweet_count }
+        puts retweeted
+        puts retweeted.map { |key, value| key }
+        retweeted = retweeted.map { |key, value| key }
+        retweeted[0...amount]
     end
 
     def tweets_data(tweets)
