@@ -1,6 +1,6 @@
 $(function() {
-  $('form.question').on('submit', makeQuestion)
-  $('form.versus').on('submit', makeVersus)
+  $('form.question').on('submit', questionMake)
+  $('form.versus').on('submit', versusMake)
   $('.question-fixed').on('click', makeQuestionFixed)
   $('.question-demo').on('click', function(ev) {
     questionProcessing()
@@ -8,12 +8,15 @@ $(function() {
   })
 })
 
-function makeQuestion(ev) {
-  // Bloquear post del formulario
+// SINGLE QUESTION
+
+function questionProcessing() {
+  cleanResponse()
+  $('.response').html('<h4>Cargando...</h4>')
+}
+
+function questionMake(ev) {
   ev.preventDefault()
-    // Borrar info anterior
-  questionProcessing()
-    // Obtenemos la pregunta
   var question = $('textarea.question').val()
   var error = isQuestionValid(question)
   if (error) {
@@ -23,38 +26,8 @@ function makeQuestion(ev) {
   }
 }
 
-function makeVersus(ev) {
-  // Bloquear post del formulario
-  ev.preventDefault()
-    // Borrar info anterior
-  questionProcessing()
-    // Obtenemos la pregunta
-  var question1 = $('textarea.question1').val()
-  var question2 = $('textarea.question2').val()
-  var error1 = isQuestionValid(question1)
-  var error2 = isQuestionValid(question2)
-  if (error1){
-    questionError(error1)
-  }
-  else {
-    questionExecute(question1)
-    //questionExecute(question2)
-  }
-}
-
-
-function cleanResponse() {
-  $('.error').html('')
-  $('.response').html('')
-}
-
-function isQuestionValid(question) {
-  if (question == "") {
-    return "La pregunta está vacía"
-  }
-}
-
 function questionExecute(question) {
+  questionProcessing()
   $.ajax({
     type: "POST",
     url: "/api/v1/question",
@@ -102,6 +75,8 @@ function questionExecute(question) {
   })
 }
 
+// FIXED QUESTION
+
 function makeQuestionFixed() {
   questionProcessing()
   $.ajax({
@@ -121,13 +96,140 @@ function makeQuestionFixed() {
   })
 }
 
-function questionProcessing() {
+// VERSUS QUESTION
+
+function versusProcessing() {
   cleanResponse()
-  $('.response').html('<h4>Cargando...</h4>')
+  $('.response1').html('<h4>Cargando...</h4>')
+  $('.response2').html('<h4>Cargando...</h4>')
+  $('.response3').html('<h4>Cargando...</h4>')
+}
+
+function versusMake(ev) {
+  ev.preventDefault()
+  versusProcessing()
+  var question1 = $('textarea.question1').val()
+  var question2 = $('textarea.question2').val()
+  var error1 = isQuestionValid(question1)
+  var error2 = isQuestionValid(question2)
+  if (error1) {
+    questionError(error1)
+  } else if (error2) {
+    questionError(error2)
+  } else {
+    versusExecute(question1, question2)
+  }
+}
+
+function versusExecute(question1, question2) {
+  // question 1
+  $.ajax({
+    type: "POST",
+    url: "/api/v1/question",
+    data: {
+      "question": question1
+    },
+    success: function(result) {
+      var html = '<h3>Respuesta ' + question1 + '</h3><center>'
+      html += '<br><br><div class= percentagebox>'
+      html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
+      html += '<h4>Puntaje: ' + result['score'] + '</h4>'
+      html += '<h4>Intervalo de confianza: ' + result['confidence'] + '%</h4>'
+      html += ""
+      html += '</div><br>'
+      html += '<div class= percentagebox>'
+      html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
+      html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
+      html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
+      $('.response1').html(html)
+    },
+    error: function(req, status, error) {
+      cleanResponse()
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (4)</h3>' + error + '</div>'
+      $('.error').html(html)
+      $('.closebtn').on('click', cleanResponse)
+    }
+  })
+  // question 2
+  $.ajax({
+    type: "POST",
+    url: "/api/v1/question",
+    data: {
+      "question": question2
+    },
+    success: function(result) {
+      var html = '<br><h3>Respuesta ' + question2 + '</h3><center>'
+      html += '<br><br><div class= percentagebox>'
+      html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
+      html += '<h4>Puntaje: ' + result['score'] + '</h4>'
+      html += '<h4>Intervalo de confianza: ' + result['confidence'] + '%</h4>'
+      html += ""
+      html += '</div><br>'
+      html += '<div class= percentagebox>'
+      html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
+      html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
+      html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
+      $('.response2').html(html)
+    },
+    error: function(req, status, error) {
+      cleanResponse()
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (4)</h3>' + error + '</div>'
+      $('.error').html(html)
+      $('.closebtn').on('click', cleanResponse)
+    }
+  })
+  // 3 best tweets
+  $.ajax({
+    type: "POST",
+    url: "/api/v1/question",
+    data: {
+      "question": question1 + ' ' + question2
+    },
+    success: function(result) {
+      var html = '<br><h3>Respuesta conjunta</h3><br><div class= percentagebox><h4>Conceptos clave</h4>'
+      concepts = result['key_concepts']
+      for (var i in concepts) {
+        html += '<p>' + concepts[i] + '</p>'
+      }
+      html += '</div>'
+      html += '<br><h3>3 Best Tweets</h3>'
+      tweets = result['retweets']
+      for (var i in tweets) {
+        html += '<div class = "tweetbox">' + tweets[i].text + '</div>'
+      }
+      html += '</center>'
+      $('.response3').html(html)
+    },
+    error: function(req, status, error) {
+      cleanResponse()
+      var html = '<div class="alert"><span class="closebtn">&times;</span><h3>Hubo un error procesando la pregunta, intenta con otra pregunta. (4)</h3>' + error + '</div>'
+      $('.error').html(html)
+      $('.closebtn').on('click', cleanResponse)
+    }
+  })
+}
+
+// GENERAL
+
+function isQuestionValid(question) {
+  if (question == "") {
+    return "La pregunta está vacía"
+  }
+}
+
+function cleanResponse() {
+  $('.error').html('')
+  $('.response').html('')
 }
 
 function questionError(error) {
-  cleanResponse()
+  questionCleanResponse()
   var html = '<div class="alert"><span class="closebtn">&times;</span><h3>La pregunta ingresada es inválida, intenta con otra pregunta.</h3>  </div>'
   $('.error').html(html)
   $('.closebtn').on('click', cleanResponse)

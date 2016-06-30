@@ -80,6 +80,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         data['sentence_list'].each { |tweet| scores[tweet['score_tag']] += 1 }
         scores.delete('NONE')
         total = scores.map { |key, value| value }.inject(:+)
+        return 0, 0, 0 if total == 0
         return 100*(scores['P'] + scores['P+'])/total, 100*(scores['N'] + scores['N+'])/total, 100*(scores['NEU'])/total
     end
 
