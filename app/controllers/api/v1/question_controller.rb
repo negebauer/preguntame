@@ -21,9 +21,10 @@ class Api::V1::QuestionController < Api::V1::ApiController
         retweets = tweets_retweeted(tweets, 3)
         data, score, confidence = tweets_data(tweets)
         pos, neg, neu = tweets_scores(data)
+        key_concepts = tweets_key_concepts(data).map { |key, val| key }
         scores = {'P' => 'Positivo', 'P+' => 'Muy positivo', 'N' => 'Negativo', 'N+' => 'Muy negativo', 'NEU' => 'Neutro', 'NONE' => 'No hay'}
 
-        render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu }
+        render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts }
     end
 
 
@@ -75,15 +76,26 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
     def tweets_scores(data)
         scores = {'P' => 0, 'P+' => 0, 'N' => 0, 'N+' => 0, 'NEU' => 0, 'NONE' => 0}
-        unless !data['sentence_list'].nil?
-            return 0, 0, 0
-        end
-        data['sentence_list'].each do |tweet|
-            scores[tweet['score_tag']] += 1
-        end
-        total = scores.map { |key, value| value }
-        total = total.inject(:+)
+        return 0, 0, 0 if data['sentence_list'].nil?
+        data['sentence_list'].each { |tweet| scores[tweet['score_tag']] += 1 }
+        scores.delete('NONE')
+        total = scores.map { |key, value| value }.inject(:+)
         return 100*(scores['P'] + scores['P+'])/total, 100*(scores['N'] + scores['N+'])/total, 100*(scores['NEU'])/total
+    end
+
+    def tweets_key_concepts(data)
+        items = {}
+        data['sentence_list'].each { |tweet| tweet['segment_list'].each { |segment| segment['polarity_term_list'].each { |polarity|
+            polarity['sentimented_concept_list'].each { |concept|
+                key = concept['form']
+                items[key].nil? ? items[key] = 1 : items[key] += 1
+            } if !polarity['sentimented_concept_list'].nil?
+            polarity['sentimented_entity_list'].each { |entity|
+                key = entity['form']
+                items[key].nil? ? items[key] = 1 : items[key] += 1
+            } if !polarity['sentimented_entity_list'].nil?
+        }}}
+        return items
     end
 
     def stop_words_check
