@@ -42,11 +42,19 @@ function questionExecute(question) {
     },
     success: function(result) {
       var html = '<h3>Respuesta</h3><center>'
+      html += '<div class= percentagebox>'
+      html += '<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"><body class="w3-container">'
       html += '<h4>Puntaje: ' + result['score'] + '</h4>'
-      html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
-      html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
-      html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
       html += '<h4>Intervalo de confianza: ' + result['confidence'] + '%</h4>'
+      html += '</div><br>'
+      html += '<div class= percentagebox>'
+      html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:'+result['pos']+'%"><div class="w3-center w3-text-white">'+result['pos']+'%</div></div></div><br>'
+      html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:'+result['neg']+'%"><div class="w3-center w3-text-white">'+result['neg']+'%</div></div></div><br>'
+      html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:'+result['neu']+'%"><div class="w3-center w3-text-white">'+result['neu']+'%</div></div></div><br>'
+      html += '</div><br><br><br><h3>3 Best Tweets</h3>'
       tweets = result['retweets']
       console.log(tweets);
       for (var i in tweets) {
