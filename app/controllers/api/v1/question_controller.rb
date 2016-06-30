@@ -32,7 +32,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         # end
         # tweets.map { |t| t.retweet_count }
         # tweets
-        tweets[0...3]
+        tweets[0...3].map { |t| t.uri.to_s }
     end
 
     def stop_words_check
