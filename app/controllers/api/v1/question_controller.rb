@@ -102,25 +102,24 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
 
     def processing_cluster_list(jason)
-      cluster_list = jason['cluster_list'][1..3]
-      cluster_tweets = []
-      cluster_list.each do |cluster|
-        cluster["document_list"].keys.each do |index|
-          mensaje = deleter cluster["document_list"][index]
-          if !cluster_tweets.include? mensaje
-            cluster_tweets << mensaje
-          end
+        cluster_list = jason['cluster_list'][1..3]
+        cluster_tweets = []
+        cluster_list.each do |cluster|
+            cluster["document_list"].keys.each do |index|
+                mensaje = deleter cluster["document_list"][index]
+                if !cluster_tweets.include? mensaje
+                    cluster_tweets << mensaje
+                end
+            end
         end
-      end
-      return cluster_tweets[1..5]
-
+        return cluster_tweets[1..5]
     end
 
     def tweets_for_cluster(tweets)
       message = ""
       id = ""
-      total = tweets.count + 1
-      tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n"}
+      total = tweets.count +1
+      tweets.each { |t| message += t.full_text.gsub("\n", ' ') + "\n" }
       total.times {|i| id = id + String(i) + "\n"}
       return message, id
     end
@@ -140,7 +139,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
     def tweets_retweeted(tweets, amount)
         retweeted = {}
-        tweets.sort_by { |t| t.retweet_count }.reverse.each { |t| retweeted[t.full_text] = t.retweet_count }
+        tweets.sort_by { |t| t.retweet_count }.reverse.each { |t| retweeted[deleter t.full_text] = t.retweet_count }
         retweeted = retweeted.map { |key, value| key }
         retweeted[0...amount]
     end

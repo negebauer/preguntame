@@ -77,7 +77,7 @@ function questionExecute(question) {
       html += '<br><h3>5 Tweets más destacados</h3>'
       tweets = result['retweets']
       for (var i in tweets) {
-        html += '<div class = "tweetbox">' + tweets[i].text + '</div>'
+        html += '<div class = "tweetbox">' + tweets[i] + '</div>'
       }
       html += '</div>'
       clusters = result['clusters']
@@ -209,7 +209,7 @@ function versusExecute(question1, question2) {
       html += '<br><h3>Y los 5 tweets más destacados en relación a tu comparación son ...</h3>'
       tweets = result['retweets']
       for (var i in tweets) {
-        html += '<div class = "tweetbox">' + tweets[i].text + '</div>'
+        html += '<div class = "tweetbox">' + tweets[i] + '</div>'
       }
       html += '</center>'
       $('.response3').html(html)
