@@ -22,16 +22,10 @@ class Api::V1::QuestionController < Api::V1::ApiController
     private
 
     def respond(question)
-        # response = []
         tweets = @@client.search(question, result_type: "today").take(10).collect
         tweets = tweets.sort_by { |t| t.retweet_count }
         tweets = tweets.reverse
-        # @@client.search(question, result_type: "today").take(500).collect do |tweet|
-        #   puts"#{tweet.full_text}:#{tweet.retweet_count},#{tweet.favorite_count}"
-            # response.append(tweet.full_text)
-        # end
-        # tweets.map { |t| t.retweet_count }
-        # tweets
+        # {tweet.full_text}:#{tweet.retweet_count},#{tweet.favorite_count}"
         tweets[0...3].map { |t| t.uri.to_s }
     end
 

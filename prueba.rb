@@ -22,7 +22,7 @@ response = Unirest.post "https://api.meaningcloud.com/sentiment-2.1",
 parameters:{
   key: "68e8c30899c70cee783b176a3c6eb140",
   lang: "es",
-  txt: "Hola como estas"}
+  txt: x}
 
 
 #message = I18n.transliterate(message)
