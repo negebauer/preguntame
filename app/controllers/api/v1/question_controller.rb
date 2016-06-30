@@ -46,7 +46,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         tweets = tweets.sort_by { |t| t.retweet_count }
         tweets = tweets.reverse
         # {tweet.full_text}:#{tweet.retweet_count},#{tweet.favorite_count}"
-        tweets[0...3].map { |t| t.uri.to_s }
+        tweets[0...3].map { |t| { 'text': t.full_text } }
     end
 
     def stop_words_check

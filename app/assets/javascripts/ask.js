@@ -37,7 +37,12 @@ function questionExecute(question) {
       "question": question
     },
     success: function(result) {
-      var html = '<h3>Respuesta</h3><p>' + result['html'] + '</p>'
+      var html = '<h3>Respuesta</h3>'
+      tweets = result['response']
+      console.log(tweets);
+      for (var i in tweets) {
+        html += '<p>' + tweets[i].text + '</p>'
+      }
       $('.response').html(html)
     },
     error: function(req, status, error) {
