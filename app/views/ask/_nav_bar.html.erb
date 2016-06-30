@@ -1,7 +1,7 @@
 <center>
     <div class='contenedor'>
         <ul class="nav nav-pills nav-justified">
-            <% nav_elements = { Preguntame: ask_home_path, Versus: ask_versus_path } %>
+            <% nav_elements = { Pregúntame: ask_home_path, Versus: ask_versus_path } %>
             <% nav_elements.each do |key, value| %>
             <li role="presentation" , class="<%= 'active' if value == active %>">
                 <%= link_to key, value %>

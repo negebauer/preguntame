@@ -244,5 +244,5 @@ function requestError(req, status, error) {
 
 function twitter_button(question, measure, value) {
   var question2 = question.split('?').join('')
-  return "<a href=\"https://twitter.com/intent/tweet?button_hashtag=" + measure + "&text=Pregunta: " + question2 + " @Preguntame " + value.toString() + "\" class=\"twitter-hashtag-button\" data-size=\"large\" data-related=\"rtacuna\" data-url=\"\">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>"
+  return "<a href=\"https://twitter.com/intent/tweet?button_hashtag=" + measure + "&text=Pregunta: " + question2 + " @Pregúntame " + value.toString() + "\" class=\"twitter-hashtag-button\" data-size=\"large\" data-related=\"rtacuna\" data-url=\"\">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>"
 }
