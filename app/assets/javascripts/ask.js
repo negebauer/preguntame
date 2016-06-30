@@ -10,7 +10,7 @@ $(function() {
 function makeQuestion(ev) {
   // Bloquear post del formulario
   ev.preventDefault()
-  // Borrar info anterior
+    // Borrar info anterior
   questionProcessing()
     // Obtenemos la pregunta
   var question = $('textarea.question').val()
@@ -49,14 +49,12 @@ function questionExecute(question) {
       html += '</div><br>'
       html += '<div class= percentagebox>'
       html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:'+result['pos']+'%"><div class="w3-center w3-text-white">'+result['pos']+'%</div></div></div><br>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
       html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:'+result['neg']+'%"><div class="w3-center w3-text-white">'+result['neg']+'%</div></div></div><br>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
       html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
-      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:'+result['neu']+'%"><div class="w3-center w3-text-white">'+result['neu']+'%</div></div></div></div><br>'
-      html += '<br><h3>Conceptos clave</h3>'
-      html += '<p>' + result['key_concepts'] + '</p>'
-      html += '<br><h3>3 Best Tweets</h3>'
+      html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
+      html += '</div><br><br><br><h3>3 Best Tweets</h3>'
       tweets = result['retweets']
       console.log(tweets);
       for (var i in tweets) {
