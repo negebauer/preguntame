@@ -1,13 +1,27 @@
+<div class="form-group">
+    <center>
+        <div class='logo_app'></div>
+        <h1>Preguntame algo</h1>
+    </center>
+</div>
+
+<center>
+    <div class='contenedor'>
+    <ul class="nav nav-pills nav-justified">
+        <li role="presentation", class="active">
+            <%= link_to 'Preguntame', ask_home_path %>
+        </li>
+        <li role="presentation">
+            <%= link_to 'Versus', ask_versus_path %>
+        </li>
+    </ul>
+</div>
+</center>
+
 <center>
     <div class="container-fluid">
         <%= form_tag ask_home_path, class: "question" do %>
 
-        <div class="form-group">
-            <center>
-                <div class='logo_app'></div>
-                <h1>Preguntame algo</h1>
-            </center>
-        </div>
         <div class='contenedor'>
             <div class="form-group">
                 <%= text_area_tag :question, nil, class: "question form-control",placeholder: "Escribe un pregunta acá"  %>
@@ -16,8 +30,6 @@
                 <%= submit_tag "Preguntame!", class: "form-control btn btn-primary" %><br><br>
             </div>
             <% end %>
-            <%= link_to 'versus', ask_versus_path %>
-
         </div>
 
         <div class='contenedor'>
