@@ -12,6 +12,23 @@ class Api::V1::QuestionController < Api::V1::ApiController
     @@stop_words = []
     @@client = nil
 
+    def delete_RT(string)
+      if string.include? ":"
+        return string[string.index(":") + 2 .. -1]
+      end
+      return string
+    end
+
+    def delete_link(string)
+      words = []
+      string.split.each { |w| words << w if !w.include? "http"}
+      return words.join(" ")
+    end
+
+    def deleter string
+      return delete_link delete_RT string
+    end
+
     def question
         question = params.require('question')
 
@@ -89,9 +106,9 @@ class Api::V1::QuestionController < Api::V1::ApiController
       cluster_tweets = []
       cluster_list.each do |cluster|
         cluster["document_list"].keys.each do |index|
-          mensaje = cluster["document_list"][index].split("http")
-          if !cluster_tweets.include? mensaje[0]
-            cluster_tweets << mensaje[0]
+          mensaje = deleter cluster["document_list"][index]
+          if !cluster_tweets.include? mensaje
+            cluster_tweets << mensaje
           end
         end
       end
