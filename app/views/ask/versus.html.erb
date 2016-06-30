@@ -10,21 +10,15 @@
         </div>
         <div class='contenedor'>
             <div class="form-group">
-                <%= text_area_tag :question, nil, class: "question form-control",placeholder: "Escribe un pregunta acá"  %>
+                <%= text_area_tag :question1, nil, class: "question form-control",placeholder: "Escribe el primer parámetro"  %>
+                <br><p>V/S </p>
+                <%= text_area_tag :question2, nil, class: "question form-control",placeholder: "Escribe el segundo parámetro"  %>
             </div>
             <div class="form-group">
                 <%= submit_tag "Preguntame!", class: "form-control btn btn-primary" %><br><br>
             </div>
             <% end %>
-            <%= link_to 'versus', ask_versus_path %>
 
-        </div>
-
-        <div class='contenedor'>
-            <%= button_tag "¿Es Entel una buena compañia?", class: 'question-demo btn btn-default btn-block' %>
-            <%= button_tag "¿Como está Providencia?", class: 'question-demo btn btn-default btn-block' %>
-            <%= button_tag "¿Alemania gana la eurocopa?", class: 'question-demo btn btn-default btn-block' %>
-            <%= button_tag "¿Como está Chile?", class: 'question-fixed btn btn-default btn-block' %>
         </div>
 
         <div class='contenedor'>
