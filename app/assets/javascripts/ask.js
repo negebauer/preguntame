@@ -44,13 +44,13 @@ function questionExecute(question) {
       html += '</div><br>'
       html += '<h3>Ahora un análisis más detallado del estado emocional...</h3>'
       html += '<div class= percentagebox>'
-      html += '<h4>% Tweets Positivos: ' + result['pos'] + '%</h4>'
+      html += '<h4>Tweets Positivos: ' + result['pos'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-green" style="width:' + result['pos'] + '%"><div class="w3-center w3-text-white">' + result['pos'] + '%</div></div></div><br>'
       html += twitter_button(question, 'Positivo', result['pos'])
-      html += '<h4>% Tweets Negativos: ' + result['neg'] + '%</h4>'
+      html += '<h4>Tweets Negativos: ' + result['neg'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-red" style="width:' + result['neg'] + '%"><div class="w3-center w3-text-white">' + result['neg'] + '%</div></div></div><br>'
       html += twitter_button(question, 'Negativo', result['neg'])
-      html += '<h4>% Tweets Neutros: ' + result['neu'] + '%</h4>'
+      html += '<h4>Tweets Neutros: ' + result['neu'] + '%</h4>'
       html += '<div class="w3-progress-container"><div id="myBar" class="w3-progressbar w3-light-blue" style="width:' + result['neu'] + '%"><div class="w3-center w3-text-white">' + result['neu'] + '%</div></div></div><br>'
       html += twitter_button(question, 'Neutro', result['neu']) + '</div><br>'
       html += '<h3>Quizás te interese saber cuales son los conceptos claves de tu pregunta...</h3>'
