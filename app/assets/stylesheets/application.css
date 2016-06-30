@@ -30,9 +30,10 @@
     max-width: 150px;
 }
 .contenedor {
-    margin-left: 20vw;
-    margin-right: 20vw;
+    /*margin-left: 10vw;*/
+    /*margin-right: 10vw;*/
     padding-top: 20px;
+    max-width: 500px;
 }
 .alert {
     padding: 20px;
