@@ -100,9 +100,9 @@ function makeQuestionFixed() {
 
 function versusProcessing() {
   cleanResponse()
-  $('.response1').html('<h4>Cargando...</h4>')
-  $('.response2').html('<h4>Cargando...</h4>')
-  $('.response3').html('<h4>Cargando...</h4>')
+  $('.response1').html('<h4>Cargando 1...</h4>')
+  $('.response2').html('<h4>Cargando 2...</h4>')
+  $('.response3').html('<h4>Cargando 3...</h4>')
 }
 
 function versusMake(ev) {
@@ -229,7 +229,7 @@ function cleanResponse() {
 }
 
 function questionError(error) {
-  questionCleanResponse()
+  cleanResponse()
   var html = '<div class="alert"><span class="closebtn">&times;</span><h3>La pregunta ingresada es inválida, intenta con otra pregunta.</h3>  </div>'
   $('.error').html(html)
   $('.closebtn').on('click', cleanResponse)
