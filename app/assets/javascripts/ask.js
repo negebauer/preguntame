@@ -37,7 +37,6 @@ function questionExecute(question) {
       "question": question
     },
     success: function(result) {
-      // render json: { 'retweets': retweets, 'score': score, 'confidence': confidence }
       var html = '<h3>Respuesta</h3><center>'
       html += '<h4>Puntaje: ' + result['score'] + '</h4>'
       html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
