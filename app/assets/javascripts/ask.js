@@ -40,6 +40,9 @@ function questionExecute(question) {
       // render json: { 'retweets': retweets, 'score': score, 'confidence': confidence }
       var html = '<h3>Respuesta</h3><center>'
       html += '<h4>Puntaje: ' + result['score'] + '</h4>'
+      html += '<h4>Positivo: ' + result['pos'] + '%</h4>'
+      html += '<h4>Negativo: ' + result['neg'] + '%</h4>'
+      html += '<h4>Neutro: ' + result['neu'] + '%</h4>'
       html += '<h4>Intervalo de confianza: ' + result['confidence'] + '%</h4>'
       tweets = result['retweets']
       console.log(tweets);

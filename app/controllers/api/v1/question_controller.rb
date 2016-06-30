@@ -19,9 +19,11 @@ class Api::V1::QuestionController < Api::V1::ApiController
         data = filter.filter question.split
         tweets = tweets_for_question(data.join(' '))
         retweets = tweets_retweeted(tweets, 3)
-        score, confidence = tweets_data(tweets)
+        data, score, confidence = tweets_data(tweets)
+        pos, neg, neu = tweets_scores(data)
+        scores = {'P' => 'Positivo', 'P+' => 'Muy positivo', 'N' => 'Negativo', 'N+' => 'Muy negativo', 'NEU' => 'Neutro', 'NONE' => 'No hay'}
 
-        render json: { 'retweets': retweets, 'score': score, 'confidence': confidence }
+        render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu }
     end
 
 
@@ -48,17 +50,16 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
     def tweets_for_question(question)
         @@client.search(question, result_type: "today").take(10).collect
-        # {tweet.full_text}:#{tweet.retweet_count},#{tweet.favorite_count}"
-        # tweets[0...3].map { |t| { 'text': t.full_text } }
     end
 
     def tweets_retweeted(tweets, amount = 3)
-        (tweets.sort_by { |t| t.retweet_count }.reverse)[0...amount].map { |t| { 'text': t.full_text } }
+        tweets.sort_by { |t| t.retweet_count }.reverse[0...amount].map { |t| { 'text': t.full_text } }
     end
 
     def tweets_data(tweets)
         message = ""
         tweets.each { |t| message += t.full_text + "\n" }
+
         url = URI('http://api.meaningcloud.com/sentiment-2.1')
 
         http = Net::HTTP.new(url.host, url.port)
@@ -69,7 +70,17 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
         response = http.request(request)
         data = JSON.parse(response.body)
-        return data['score_tag'], data['confidence']
+        return data, data['score_tag'], data['confidence']
+    end
+
+    def tweets_scores(data)
+        scores = {'P' => 0, 'P+' => 0, 'N' => 0, 'N+' => 0, 'NEU' => 0, 'NONE' => 0}
+        data['sentence_list'].each do |tweet|
+            scores[tweet['score_tag']] += 1
+        end
+        total = scores.map { |key, value| value }
+        total = total.inject(:+)
+        return 100*(scores['P'] + scores['P+'])/total, 100*(scores['N'] + scores['N+'])/total, 100*(scores['NEU'])/total
     end
 
     def stop_words_check
@@ -84,6 +95,8 @@ class Api::V1::QuestionController < Api::V1::ApiController
         File.open('stopwords_es-2.txt', 'r').each_line do |line|
             @@stop_words << line.strip
         end
+        @@stop_words << "\n"
+        @@stop_words << "\r"
     end
 
     def config_twitter
