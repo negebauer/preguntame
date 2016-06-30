@@ -64,13 +64,3 @@
 .closebtn:hover {
     color: black;
 }
-.tweetbox {
-    background-color:white;
-    width: 80%;
-    padding: 25px;
-    margin: 25px;
-    color : black;
-    align-items: center;
-    border-radius: 15px;
-
-}

@@ -37,13 +37,13 @@ function questionExecute(question) {
       "question": question
     },
     success: function(result) {
-      var html = '<h3>Respuesta</h3><center>'
+      var html = '<h3>Respuesta</h3><div class=tweetboxes>'
       tweets = result['response']
       console.log(tweets);
       for (var i in tweets) {
         html += '<div class = "tweetbox">' + tweets[i].text + '</div>'
       }
-      html += '</center>'
+      html += '</div>'
       $('.response').html(html)
     },
     error: function(req, status, error) {
