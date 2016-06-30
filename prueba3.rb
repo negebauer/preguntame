@@ -25,7 +25,7 @@ end
 i = 0
 messages = ''
 ids = ''
-client.search('noche', result_type: 'today').take(1000).collect do |tweet|
+client.search('entel', result_type: 'today').take(1000).collect do |tweet|
     messages = messages + tweet.full_text.gsub("\n", ' ') + "\n"
     ids = ids + i.to_s + "\n"
     i += 1
