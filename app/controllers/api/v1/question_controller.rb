@@ -17,9 +17,11 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
         filter = Stopwords::Filter.new @@stop_words
         data = filter.filter question.split
-        response = respond(data.join(' '))
+        tweets = tweets_for_question(data.join(' '))
+        retweets = tweets_retweeted(tweets, 3)
+        score, confidence = tweets_data(tweets)
 
-        render json: { 'response': response }
+        render json: { 'retweets': retweets, 'score': score, 'confidence': confidence }
     end
 
 
@@ -37,19 +39,37 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
         response = http.request(request)
         data =  JSON.parse(response.body)
-        image = data["score_tag"] + '.png'
+        image = data[:score_tag] + '.png'
 
         render json: { 'response': image }
     end
 
     private
 
-    def respond(question)
-        tweets = @@client.search(question, result_type: "today").take(10).collect
-        tweets = tweets.sort_by { |t| t.retweet_count }
-        tweets = tweets.reverse
+    def tweets_for_question(question)
+        @@client.search(question, result_type: "today").take(10).collect
         # {tweet.full_text}:#{tweet.retweet_count},#{tweet.favorite_count}"
-        tweets[0...3].map { |t| { 'text': t.full_text } }
+        # tweets[0...3].map { |t| { 'text': t.full_text } }
+    end
+
+    def tweets_retweeted(tweets, amount = 3)
+        (tweets.sort_by { |t| t.retweet_count }.reverse)[0...amount].map { |t| { 'text': t.full_text } }
+    end
+
+    def tweets_data(tweets)
+        message = ""
+        tweets.each { |t| message += t.full_text + "\n" }
+        url = URI('http://api.meaningcloud.com/sentiment-2.1')
+
+        http = Net::HTTP.new(url.host, url.port)
+
+        request = Net::HTTP::Post.new(url)
+        request['content-type'] = 'application/x-www-form-urlencoded'
+        request.body = "key=68e8c30899c70cee783b176a3c6eb140&lang=es&txt=#{message}"
+
+        response = http.request(request)
+        data = JSON.parse(response.body)
+        return data['score_tag'], data['confidence']
     end
 
     def stop_words_check

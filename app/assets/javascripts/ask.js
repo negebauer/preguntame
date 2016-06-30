@@ -37,8 +37,11 @@ function questionExecute(question) {
       "question": question
     },
     success: function(result) {
+      // render json: { 'retweets': retweets, 'score': score, 'confidence': confidence }
       var html = '<h3>Respuesta</h3><center>'
-      tweets = result['response']
+      html += '<h4>Puntaje: ' + result['score'] + '</h4>'
+      html += '<h4>Intervalo de confianza: ' + result['confidence'] + '%</h4>'
+      tweets = result['retweets']
       console.log(tweets);
       for (var i in tweets) {
         html += '<div class = "tweetbox">' + tweets[i].text + '</div>'
