@@ -41,7 +41,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
         response = http.request(request)
         data =  JSON.parse(response.body)
-        image = data[:score_tag] + '.png'
+        image = data['score_tag'] + '.png'
 
         render json: { 'response': image }
     end
