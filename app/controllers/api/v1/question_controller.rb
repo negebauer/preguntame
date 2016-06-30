@@ -75,6 +75,9 @@ class Api::V1::QuestionController < Api::V1::ApiController
 
     def tweets_scores(data)
         scores = {'P' => 0, 'P+' => 0, 'N' => 0, 'N+' => 0, 'NEU' => 0, 'NONE' => 0}
+        unless !data['sentence_list'].nil?
+            return 0, 0, 0
+        end
         data['sentence_list'].each do |tweet|
             scores[tweet['score_tag']] += 1
         end
