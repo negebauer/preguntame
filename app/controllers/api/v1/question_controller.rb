@@ -27,7 +27,7 @@ class Api::V1::QuestionController < Api::V1::ApiController
         puts jason
 
 
-        retweets = tweets_retweeted(tweets, 3)
+        retweets = tweets_retweeted(tweets, 6)
         data, score, confidence = tweets_data(tweets)
         pos, neg, neu = tweets_scores(data)
         key_concepts = tweets_key_concepts(data).map { |key, val| key }
