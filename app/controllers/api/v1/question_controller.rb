@@ -22,7 +22,6 @@ class Api::V1::QuestionController < Api::V1::ApiController
         # Tweet analysis
         retweets = tweets_retweeted(tweets, 5)
         data, score, confidence = tweets_data(tweets)
-
         pos, neg, neu = tweets_scores(data)
         key_concepts = tweets_key_concepts(data).map { |key, val| key }
         twet_pos,twet_neg = min_max(data)
@@ -35,6 +34,9 @@ class Api::V1::QuestionController < Api::V1::ApiController
         if cluster_list.empty?
           cluster_list = ["No hay tweets de opinion"]
         end
+
+        # Register question
+        Question.new({ question: question, score: score })
 
         render json: { retweets: retweets, score: scores[score], confidence: confidence, pos: pos, neg: neg, neu: neu, key_concepts: key_concepts, clusters: cluster_list, twet_pos: twet_pos, twet_neg: twet_neg}
     end
